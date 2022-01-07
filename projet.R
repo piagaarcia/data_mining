@@ -4,7 +4,6 @@ library(dplyr)
 library(corrplot)
 library(FactoMineR)
 library(factoextra)
-
 library(dplyr)
 library(tidyverse)
 
@@ -12,31 +11,33 @@ library(tidyverse)
 #Importer la base de données dans un dataframe nommée okcupid.
 
 
-okcupid<-read.csv("C:/Users/maria/OneDrive/Escritorio/PROJETS MoSEF 2021-2022/Data Mining/okcupid_profiles.csv", stringsAsFactors=FALSE)
+data<-read.csv("C:/Users/maria/OneDrive/Escritorio/PROJETS MoSEF 2021-2022/Data Mining/okcupid_profiles.csv", stringsAsFactors=FALSE)
 
 
 #Regarder avec summary les stats principales de chaque variable. Pour les variables Numeriques on aura les valeurs MIN,MAX, la moyenne et les quartiles.
 #Pour les variables categoriques on aura sa taille (length) class et mode.
 
 
-okcupid[okcupid==""]<-NA
+data[data==""]<-NA
+
+
+str(data) #info
+
+colSums(is.na(data))  #count null values
+
+ 
+summary(data)   #summary
 
 
 
-colSums(is.na(okcupid))
+#diviser le dataset entre variables qualitatives en numeriques
 
-
-summary(okcupid)
-
-
-
-
-num<-okcupid %>%
+num<-data %>%
   dplyr::select(where(is.numeric))
 
 
-quali<-okcupid[sapply(okcupid,is.numeric)==F]
-quali<-okcupid %>%
+quali<-data[sapply(data,is.numeric)==F]
+quali<-data %>%
   dplyr::select(!where(is.numeric))
 
 
@@ -82,6 +83,8 @@ pairs(num2)
 
 
 
+# apprentissage NON supervisé sur les variables numeriques
+#je crois qu'on peut faire ça apres l'analyse exploratoire et le traitement des donnees
 
 res.pca<-PCA(num2, graph=FALSE)
 
@@ -107,7 +110,15 @@ var<-get_pca_var(res.pca)
 #ça n'a pas du sens de faire un ACP sur 2 variables numeriques...
 
 
-#ANALYSE DES VARIABLES CAT ENLEVER LES ESSAY C'EST POUR LE TEXT MINING.
+
+
+
+
+
+
+
+
+#ANALYSE DES VARIABLES quant ENLEVER LES ESSAY C'EST POUR LE TEXT MINING.
 
 
 
@@ -157,3 +168,23 @@ quali2$smokes <- quali2$smokes %>% replace_na('No answer')
 
 
 colSums(is.na(quali2))
+
+
+
+
+
+#non supervise: segmentation, Multiple component analyses (objectif convertir donnes categor en numeriques)
+
+#clustering
+#expliquer les dimensions
+
+
+
+
+
+#supervisé: predire qqchose
+
+#analyse des sentiments selon essays
+
+
+

@@ -1,9 +1,19 @@
+#librairies:
+
+library(dplyr)
+library(corrplot)
+library(FactoMineR)
+library(factoextra)
+
+library(dplyr)
+library(tidyverse)
+
+
 #Importer la base de données dans un dataframe nommée okcupid.
 
 
 okcupid<-read.csv("C:/Users/maria/OneDrive/Escritorio/PROJETS MoSEF 2021-2022/Data Mining/okcupid_profiles.csv", stringsAsFactors=FALSE)
 
-okcupid[okcupid==""]<-NA
 
 #Regarder avec summary les stats principales de chaque variable. Pour les variables Numeriques on aura les valeurs MIN,MAX, la moyenne et les quartiles.
 #Pour les variables categoriques on aura sa taille (length) class et mode.
@@ -15,12 +25,11 @@ okcupid[okcupid==""]<-NA
 
 colSums(is.na(okcupid))
 
+
 summary(okcupid)
 
 
-#importer la librairie dplyr, necessaire pour separer le dataframe en NUM pour numerique et QUALI pour les qualitatives.
 
-library(dplyr)
 
 num<-okcupid %>%
   dplyr::select(where(is.numeric))
@@ -29,7 +38,6 @@ num<-okcupid %>%
 quali<-okcupid[sapply(okcupid,is.numeric)==F]
 quali<-okcupid %>%
   dplyr::select(!where(is.numeric))
-
 
 
 #Histogramme
@@ -56,7 +64,7 @@ for(x in seq(1,length(num),1)) boxplot(num[,x],col="pink",main=names(num[x]))
 num2<-num[c("age","height")]
 
 
-library(corrplot)
+
 
 
 m<-cor(num2)
@@ -72,10 +80,7 @@ pairs(num2)
 #pairs a plus d sense, mais c'est une chose coherent
 
 
-install.packages("FactoMineR")
-install.packages("factoextra")
-library(FactoMineR)
-library(factoextra)
+
 
 
 res.pca<-PCA(num2, graph=FALSE)
@@ -145,8 +150,7 @@ colSums(is.na(quali2))
 #smokes
 
 #speaks
-library(dplyr)
-library(tidyverse)
+
 #replace NA values in column SMOKES with "No answer"
 
 quali2$smokes <- quali2$smokes %>% replace_na('No answer')

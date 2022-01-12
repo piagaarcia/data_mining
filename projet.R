@@ -102,13 +102,19 @@ summary(data)   #résumé des stats
 
 #diviser le dataset entre variables numeriques et qualitatives
 
-num<-data %>%
+numerique<-data %>%
   dplyr::select(where(is.numeric))
 
 
 quali<-data[sapply(data,is.numeric)==F]
 quali<-data %>%
   dplyr::select(!where(is.numeric))
+
+
+
+#dropper les valeurs nulles de la var height, comme ça on a une base uniforme
+
+num <-na.omit(numerique)
 
 
 #Histogramme

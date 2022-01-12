@@ -136,8 +136,8 @@ for(x in seq(1,length(num),1)) boxplot(num[,x],col="pink",main=names(num[x]))
 #HEIGHT : height in inches--> taille en pouces
 
 #INCOME: problematique: la plupart des valeurs sont -1: les gens ne publient pas leur income. ON PEUT L'ELIMINER.
-#US $, -1 means rather not say
-
+#Catégories : -1 (signifie que l’individu n’a pas voulu répondre), 20000, 30000, 40000, 50000, 60000 70000, 80000, 100000, 150000, 250000, 500000, 1000000.
+"faire des bins pour voir les plots de INCOME"
 
 #drop income de la base des numeriques
 

@@ -125,6 +125,11 @@ for(x in seq(1,length(num),1)) hist(num[,x],xlab=names(num[x]),col=rainbow(10),m
 for(x in seq(1,length(num),1)) boxplot(num[,x],col="pink",main=names(num[x]))
 
 
+#probleme avec income et la notation scientifique
+
+breaks=c(-1, 20000, 30000, 40000, 50000, 60000, 1200000)
+
+hist(num$income, xlab = "Revenu", main = "Histogramme du Revenu",  breaks, col=rainbow(10))
 
 
 

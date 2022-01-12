@@ -1,5 +1,5 @@
 "
-L'objectif de ce travail est de faire un analyse des données de l'app de rencontres OkCupid.
+L'objectif de ce travail est de faire une analyse des données de l'app de rencontres OkCupid.
 Pour le faire, nous nous sommes servis d'une base de données disponible sur le site Kaggle (https://www.kaggle.com/andrewmvd/okcupid-profiles)
 
 Cette base contient 31 variables :
@@ -117,6 +117,8 @@ for(x in seq(1,length(num),1)) hist(num[,x],xlab=names(num[x]),col=rainbow(10),m
 
 #boxplot
 for(x in seq(1,length(num),1)) boxplot(num[,x],col="pink",main=names(num[x]))
+
+
 
 
 

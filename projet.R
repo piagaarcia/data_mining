@@ -231,4 +231,33 @@ essay9- You should message me if...
 "  
 
 
+59946*0.05
+
+
+"si NA <=2997.3
+alors remplacer par mode
+si NA>2997.2 remplacer par KNN"
+
+
+"drinks et speaks mode"
+
+"les autres par KNN"
+
+
+my_mode <- function(x) {                                     # Create mode function 
+  unique_x <- unique(x)
+  mode <- unique_x[which.max(tabulate(match(x, unique_x)))]
+  mode
+}
+
+quali$drinks[is.na(quali$drinks)] <- my_mode(quali$drinks[!is.na(quali$drinks)])                 # Mode imputation
+ 
+quali$speaks[is.na(quali$speaks)] <- my_mode(quali$speaks[!is.na(quali$speaks)])                 # Mode imputation
+
+
+
+
+
+
+
 

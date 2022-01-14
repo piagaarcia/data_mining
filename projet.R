@@ -2,15 +2,9 @@
 L'objectif de ce travail est de faire une analyse des données de l'app de rencontres OkCupid.
 Pour le faire, nous nous sommes servis d'une base de données disponible sur le site Kaggle (https://www.kaggle.com/andrewmvd/okcupid-profiles)
 
-Cette base contient 31 variables :
-
-
-
+Cette base contient 31 variables.
 
 "
-
-
-
 
 
 #librairies:
@@ -32,14 +26,12 @@ data<-read.csv("C:/Users/maria/OneDrive/Escritorio/PROJETS MoSEF 2021-2022/Data 
 #Pour les variables categoriques on aura sa taille (length) class et mode.
 
 
-#les valeurs manquantes sont represnetes par des espaces, on veut que ce soit NA pour que R puisse comprendre
+#les valeurs manquantes sont representées par des espaces, on veut que ce soit NA pour que R puisse comprendre
 
 data[data==""]<-NA
 
 
-str(data) #info
-
-colSums(is.na(data))  #combien de valeurs nulles
+colSums(is.na(data))  #nombre de valeurs nulles
 
  
 summary(data)   #résumé des stats
@@ -95,112 +87,91 @@ hist(num$income, xlab = "Revenu", main = "Histogramme du Revenu",  breaks, col=r
 num2<-num[c("age","height")]
 
 
-
-
-
 m<-cor(num2)
 corrplot(m,method='ellipse')
 
-
-#le corr plot, c'est vraiment necessaire?
-
-
-
 pairs(num2)
 
-#pairs a plus d sense, mais c'est une chose coherent
-
-
-
-
-# apprentissage NON supervisé sur les variables numeriques
-#je crois qu'on peut faire ça apres l'analyse exploratoire et le traitement des donnees
+#PCA sur les variables numeriques
 
 res.pca<-PCA(num2, graph=FALSE)
 
 res.pca
 
 
-
+#eigenvalues
 eig.val<-get_eigenvalue(res.pca)
 
-num_norm=scale(num2)
-
+#graphs
 
 fviz_eig(res.pca,addlabels = TRUE,ylim=c(0,60))
 fviz_pca_var(res.pca,col.var = "blue")
 fviz_pca_var(res.pca,col.var = "blue",axes = c(1,2))
 
 
-
 var<-get_pca_var(res.pca)
 
 
 
-#ça n'a pas du sens de faire un ACP sur 2 variables numeriques...
+#VARIABLES QUALITATIVES: TRAITEMENT DES VALEURS MANQUANTES
+
+
+"si NA <=2997.3
+alors remplacer par mode"
+
+
+
+"drinks et speaks mode"
 
 
 
 
+my_mode <- function(x) {                                     # Create mode function 
+  unique_x <- unique(x)
+  mode <- unique_x[which.max(tabulate(match(x, unique_x)))]
+  mode
+}
+
+quali$drinks[is.na(quali$drinks)] <- my_mode(quali$drinks[!is.na(quali$drinks)])                #imputation mode drinks
+
+
+quali$speaks[is.na(quali$speaks)] <- my_mode(quali$speaks[!is.na(quali$speaks)])                 # imputation mode speaks
 
 
 
+quali$diet[is.na(quali$diet)] <- my_mode(quali$diet[!is.na(quali$diet)])                 # imputation mode diet
+
+quali$drugs[is.na(quali$drugs)] <- my_mode(quali$drugs[!is.na(quali$drugs)])                 # imputation mode diet
+
+quali$education[is.na(quali$education)] <- my_mode(quali$education[!is.na(quali$education)])                 # imputation mode diet
+
+quali$offspring[is.na(quali$offspring)] <- my_mode(quali$offspring[!is.na(quali$offspring)])                 # imputation mode diet
+
+quali$pets[is.na(quali$pets)] <- my_mode(quali$pets[!is.na(quali$pets)])                 # imputation mode diet
+quali$sign[is.na(quali$sign)] <- my_mode(quali$sign[!is.na(quali$sign)])                 # imputation mode diet
+
+
+quali$smokes <- quali$smokes %>% replace_na('No answer')   #imputation smokes "No Answer"
+
+
+quali$body_type <- quali$body_type %>% replace_na('rather not say')   #imputation body_type "rather not say"
+
+quali$job <- quali$job %>% replace_na('rather not say')   #imputation job "rather not say"
+
+quali$ethnicity <- quali$ethnicity %>% replace_na('rather not say')   #imputation ethnicity "rather not say"
+
+quali$religion <- quali$religion %>% replace_na('rather not say')   #imputation ethnicity "rather not say"
+
+colSums(is.na(quali))
 
 
 
-#ANALYSE DES VARIABLES quant ENLEVER LES ESSAY C'EST POUR LE TEXT MINING.
+#essays sans essays
 
 
+essays<-quali[c(19:28)]
 
-
-quali2<-quali[c(1:18)]
-
-
-
-colSums(is.na(quali2))
-
-
-#body_type        diet      drinks       drugs   education   ethnicity         job
-
-
-
-
-# offspring        pets    religion        sign      smokes      speaks 
-
-35561/59946
-
-
-
-
-
-#PROBLENE AVEC OFFSPRINF ET PETS
-
-#Religion: remplacer avec "ne veut pas le dire" ou sim.
-
-#Body_type: predire.
-
-
-#education
-
-#ethnicity
-
-#job
-
-#sign
-
-#smokes
-
-#speaks
-
-#replace NA values in column SMOKES with "No answer"
-
-quali2$smokes <- quali2$smokes %>% replace_na('No answer')
-
-
-colSums(is.na(quali2))
-
-
-
+quali<-quali[c(1:18)]
 
 
 #non supervise: segmentation, Multiple component analyses (objectif convertir donnes categor en numeriques)
@@ -210,49 +181,10 @@ colSums(is.na(quali2))
 
 
 
-
-
 #supervisé: predire qqchose
 
 
 
-"analyse des sentiments selon essays
-
-essay0- My self summary
-essay1- What I’m doing with my life
-essay2- I’m really good at
-essay3- The first thing people usually notice about me
-essay4- Favorite books, movies, show, music, and food
-essay5- The six things I could never do without
-essay6- I spend a lot of time thinking about
-essay7- On a typical Friday night I am
-essay8- The most private thing I am willing to admit
-essay9- You should message me if...
-"  
-
-
-59946*0.05
-
-
-"si NA <=2997.3
-alors remplacer par mode
-si NA>2997.2 remplacer par KNN"
-
-
-"drinks et speaks mode"
-
-"les autres par KNN"
-
-
-my_mode <- function(x) {                                     # Create mode function 
-  unique_x <- unique(x)
-  mode <- unique_x[which.max(tabulate(match(x, unique_x)))]
-  mode
-}
-
-quali$drinks[is.na(quali$drinks)] <- my_mode(quali$drinks[!is.na(quali$drinks)])                 # Mode imputation
- 
-quali$speaks[is.na(quali$speaks)] <- my_mode(quali$speaks[!is.na(quali$speaks)])                 # Mode imputation
 
 
 

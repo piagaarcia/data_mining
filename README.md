@@ -1,2 +1,1 @@
-# data_mining
-Projet DM MoSEF
+# Projet Data Mining MoSEF

@@ -256,8 +256,3 @@ quali$speaks[is.na(quali$speaks)] <- my_mode(quali$speaks[!is.na(quali$speaks)])
 
 
 
-
-
-
-
-
